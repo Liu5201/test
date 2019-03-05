@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+  <!-- 配置核心控制器
+   作用:a.拦截所有控制器请求，并根据请求的名称做出分发处理
+       b.加载springmvc的配置文件-->
+  <servlet>
+    <servlet-name>springmvc</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath:springmvc-servlet.xml</param-value>
+    </init-param>
+    <!--指定servlet加载的顺序-->
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>springmvc</servlet-name>
+    <!--核心控制器拦截的请求-->
+    <url-pattern>*.s</url-pattern>
+  </servlet-mapping>
+
+
+      <display-name>Archetype Created Web Application</display-name>
+      <!--配置spring启动文件-->
+      <context-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath:applicationContext.xml</param-value>
+      </context-param>
+      <!--2.使用 ContextLoaderListener监听器启动spring容器-->
+      <listener>
+      <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+      </listener>
+</web-app>

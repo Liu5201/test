@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:p="http://www.springframework.org/schema/p"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:util="http://www.springframework.org/schema/util"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+	   http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+	   http://www.springframework.org/schema/aop
+ http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+ 	   http://www.springframework.org/schema/context
+ http://www.springframework.org/schema/context/spring-context-4.3.xsd
+  http://www.springframework.org/schema/tx
+ http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+">
+	<!--1.在spring配置文件使用PropertyPlaceholderConfigurer类加载使用文件-->
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:jdbc.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<!--2.在spring配置文件中使有${属性文件中的键}引用属性文件中的参数-->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="${jdbc.driverClass}"></property>
+		<property name="url" value="${jdbc.url}">
+
+		</property>
+		<property name="username" value="${jdbc.username}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+	</bean>
+
+	<!--3.定义sqlSessionFactory组件-->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!--注入数据源-->
+		<property name="dataSource" ref="dataSource"></property>
+		<!--加载mybatis的配置-->
+		<property name="configLocation" value="classpath:mybatis-config.xml"></property>
+	</bean>
+
+
+	<!--	4、使用MapperScannerConfigurer类自动生成Dao接口的代理实现类
+	注意 :sql映射文件的命名空间的值为接口的限定名，接口方法名称必需和持久化操作id值相同
+	：生成代理实现类的bean对象的id值就是接口名称首字母小写-->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!--注入sqlSessionFactory工厂-->
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+		<!--指定生成dao层实现类对应的dao接口包-->
+		<property name="basePackage" value="com.user.dao"></property>
+	</bean>
+
+	<!--5.读取业务组件-->
+	<context:component-scan base-package="com.user.service.Impl"></context:component-scan>
+	<!--<bean id="gradeService" autowire="byName" class="com.studentsnts.service.Impl.GradeServiceImpl">
+		&lt;!&ndash;<property name="gradeMapper" ref="gradeMapper"></property>&ndash;&gt;
+	</bean>-->
+
+
+	<!--添加扫描业务的组件的注解-->
+	<!--<context:component-scan base-package="com.service.Impl"></context:component-scan>-->
+
+
+	<!--支持事务的配置-->
+	<!--配置Spring的事务管理器 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	<!--配置注解事务-->
+	<tx:annotation-driven transaction-manager="transactionManager"></tx:annotation-driven>
+
+
+</beans>

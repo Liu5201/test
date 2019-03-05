@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!--<environments default="development">
+		<environment id="development">
+		<transactionManager type="JDBC"/>
+			<dataSource type="POOLED">
+				<property name="driver" value="com.mysql.jdbc.Driver"/>
+				<property name="url" value="jdbc:mysql://localhost:3306/dt71?useSSL=false"/>
+				<property name="username" value="root"/>
+				<property name="password" value="root"/>
+			</dataSource>
+		</environment>
+	</environments>-->
+	<!--类型别名-->
+	<!--<typeAliases>
+		&lt;!&ndash;一个类一个别名
+		<typeAlias type="com.studentsnts.entity.Students" alias="students"></typeAlias>
+		&ndash;&gt;
+		&lt;!&ndash;给指定的包下所有实体类取别名, 别名就是实体类名&ndash;&gt;
+		<package name="com.user.entity"></package>
+	</typeAliases>-->
+	<!-- c
+        <plugins>
+            om.github.pagehelper为PageHelper类所在包名
+		<plugin interceptor="com.github.pagehelper.PageInterceptor"></plugin>
+	</plugins>-->
+	
+	<mappers>
+		<mapper resource="com/user/mapper/UserMapper.xml"/>
+	</mappers>
+</configuration>
